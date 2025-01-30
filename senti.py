@@ -27,7 +27,7 @@ dataset_path = download_dataset(download_url)
 
 # Load pre-trained models and vectorizer
 models = {
-    "Naive Bayes": joblib.load(dataset_path),
+    "Naive Bayes": joblib.load("Naive Bayes"),
     "Random Forest": joblib.load("Random Forest.pkl"),
     "KNN": joblib.load("KNN.pkl"),
     "XGBoost": joblib.load("XGBoost.pkl"),
