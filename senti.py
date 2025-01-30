@@ -1,14 +1,15 @@
-from sklearn.ensemble import RandomForestClassifier
+import os
+import re
+import string
+import gdown
 import joblib
 import pandas as pd
 import numpy as np
-import re
-import string
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics import classification_report
-import gdown
-import os
 import streamlit as st
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score, classification_report
 
 # Google Drive link
 file_id = '1DYHp9NFq0sAFOiKE5Xm5BaHoAlS2Qfp8'
@@ -40,7 +41,6 @@ df['review'] = df['review'].apply(preprocess_text)
 df['sentiment'] = df['sentiment'].map({'positive': 1, 'negative': 0})
 
 # Train-test split
-from sklearn.model_selection import train_test_split
 X_train, X_test, y_train, y_test = train_test_split(df['review'], df['sentiment'], test_size=0.2, random_state=42)
 
 # Vectorization
@@ -58,6 +58,8 @@ joblib.dump(vectorizer, 'tfidf_vectorizer.pkl', compress=3)
 
 # Evaluate the model
 y_pred = rf_model.predict(X_test_tfidf)
+
+# Add accuracy_score import at the top of the file
 st.write("Model: Random Forest")
 st.write(f"Accuracy: {accuracy_score(y_test, y_pred):.4f}")
 st.write(classification_report(y_test, y_pred))
@@ -86,4 +88,3 @@ if st.button('Predict Sentiment'):
         st.write(f"Sentiment: {sentiment}")
     else:
         st.warning("Please enter a movie review to get the prediction.")
-
